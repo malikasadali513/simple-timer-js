@@ -1,38 +1,50 @@
-let [seconds, minutes, hours] = [0, 0, 0];
-let timeRef = document.querySelector(".timer-display");
-let int = null;
+class Timer {
+  constructor() {
+    this.seconds = 0;
+    this.minutes = 0;
+    this.hours = 0;
+    this.timeRef = document.querySelector(".timer-display");
+    this.intervalId = null;
 
-document.getElementById("start-timer").addEventListener("click", () => {
-    if(int !== null) {
-        clearInterval(int);
-    }
-    int = setInterval(displayTimer, 1000);
-});
+    document.getElementById("start-timer").addEventListener("click", () => {
+      if (this.intervalId !== null) {
+        clearInterval(this.intervalId);
+      }
+      this.intervalId = setInterval(() => {
+        this.displayTimer();
+      }, 1000);
+    });
 
-document.getElementById("pause-timer").addEventListener("click", () => {
-    clearInterval(int);
-});
+    document.getElementById("pause-timer").addEventListener("click", () => {
+      clearInterval(this.intervalId);
+    });
 
-document.getElementById("reset-timer").addEventListener("click", () => {
-    clearInterval(int);
-    [seconds, minutes, hours] = [0, 0, 0];
-    timeRef.innerHTML = "00 : 00 : 00";
-}); 
+    document.getElementById("reset-timer").addEventListener("click", () => {
+      clearInterval(this.intervalId);
+      this.seconds = 0;
+      this.minutes = 0;
+      this.hours = 0;
+      this.timeRef.innerHTML = "00 : 00 : 00";
+    });
+  }
 
-function displayTimer() {
-    seconds++;
-    if(seconds == 60) {
-        seconds = 0;
-        minutes++;
-        if(minutes == 60) {
-            minutes = 0;
-            hours++;
-        }
-    }
+  displayTimer() {
+    this.seconds++;
+    if (this.seconds == 60) {
+      this.seconds = 0;
+      this.minutes++;
+      if (this.minutes == 60) {
+        this.minutes = 0;
+        this.hours++;
+      } 
+    } 
 
-    let h = hours < 10 ? "0" + hours : hours;
-    let m = minutes < 10 ? "0" + minutes : minutes;
-    let s = seconds < 10 ? "0" + seconds : seconds;
+    let h = this.hours < 10 ? "0" + this.hours : this.hours;
+    let m = this.minutes < 10 ? "0" + this.minutes : this.minutes;
+    let s = this.seconds < 10 ? "0" + this.seconds : this.seconds;
 
-    timeRef.innerHTML = `${h} : ${m} : ${s}`;
+    this.timeRef.innerHTML = `${h} : ${m} : ${s}`;
+  }
 }
+
+const timer = new Timer();
